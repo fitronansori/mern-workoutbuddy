@@ -11,8 +11,10 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("Hello Workout Buddy");
 });
+
+app.use("/api/workouts", require("./routes/workoutRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
