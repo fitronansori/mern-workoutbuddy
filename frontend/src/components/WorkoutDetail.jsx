@@ -18,12 +18,7 @@ const WorkoutDetails = ({ workout }) => {
 };
 
 WorkoutDetails.propTypes = {
-  workout: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    load: PropTypes.number.isRequired,
-    reps: PropTypes.number.isRequired,
-    createdAt: PropTypes.instanceOf(Date).isRequired,
-  }).isRequired,
+  workout: PropTypes.object.isRequired,
 };
 
 export default WorkoutDetails;
