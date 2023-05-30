@@ -1,9 +1,11 @@
-import RootLayout from "./routes/RootLayout";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
     <main>
-      <RootLayout />
+      <Navbar />
+      <Home />
     </main>
   );
 };
