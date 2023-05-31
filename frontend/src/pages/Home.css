@@ -35,10 +35,10 @@
   top: 20px;
   right: 20px;
   cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
+  background: lightgreen;
+  padding: 10px;
+  /* border-radius: 50%; */
+  color: darkgreen;
 }
 
 /* new workout form */
@@ -72,15 +72,3 @@ div.error {
   border-radius: 4px;
   margin: 20px 0;
 }
-
-/* div.error {
-  padding: 10px;
-  background: #ffefef;
-  border: 1px solid var(--error);
-  color: var(--error);
-  border-radius: 4px;
-  margin: 20px 0;
-}
-input.error {
-  border: 1px solid var(--error);
-} */
