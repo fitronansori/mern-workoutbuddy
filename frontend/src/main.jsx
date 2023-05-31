@@ -4,7 +4,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import RootLayout from "./routes/RootLayout";
-import { WorkoutsContextProvider } from "./context/WorkoutsContext";
+// import { WorkoutsContextProvider } from "./context/WorkoutsContext";
+import { store } from "./app/store";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
   {
@@ -16,8 +18,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <WorkoutsContextProvider>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </WorkoutsContextProvider>
+    </Provider>
   </React.StrictMode>
 );

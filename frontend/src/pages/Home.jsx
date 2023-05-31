@@ -2,24 +2,26 @@ import { useEffect } from "react";
 import WorkoutDetails from "../components/WorkoutDetail";
 import WorkoutForm from "../components/WorkoutForm";
 import "./Home.css";
-import { useWorkoutsContext } from "../hooks/useWorkoutsContex";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { getWorkouts } from "../features/workouts/workoutsSlice";
 
 const Home = () => {
-  const { workouts, dispatch } = useWorkoutsContext();
+  const workouts = useSelector((state) => state.workouts.workouts);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const getWorkouts = async () => {
+    const fetchWorkouts = async () => {
       try {
-        const res = await fetch("http://localhost:2001/api/workouts");
-        const data = await res.json();
-        // console.log(data);
-        dispatch({ type: "SET_WORKOUTS", payload: data });
+        const res = await axios.get("http://localhost:2001/api/workouts");
+        dispatch(getWorkouts(res.data));
+        console.log(res.data);
       } catch (err) {
         console.error(err);
       }
     };
 
-    getWorkouts();
+    fetchWorkouts();
   }, [dispatch]);
 
   return (

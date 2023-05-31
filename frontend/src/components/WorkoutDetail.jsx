@@ -1,20 +1,17 @@
 import PropTypes from "prop-types";
-import { useWorkoutsContext } from "../hooks/useWorkoutsContex";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { deleteWorkout } from "../features/workouts/workoutsSlice";
 
 const WorkoutDetails = ({ workout }) => {
-  const { dispatch } = useWorkoutsContext();
+  const dispatch = useDispatch();
 
   const handleDelete = async () => {
-    const response = await fetch(
-      "http://localhost:2001/api/workouts/" + workout._id,
-      {
-        method: "DELETE",
-      }
-    );
-    const json = await response.json();
-
-    if (response.ok) {
-      dispatch({ type: "DELETE_WORKOUT", payload: json });
+    try {
+      await axios.delete(`http://localhost:2001/api/workouts/${workout._id}`);
+      dispatch(deleteWorkout(workout._id));
+    } catch (err) {
+      console.error(err);
     }
   };
 

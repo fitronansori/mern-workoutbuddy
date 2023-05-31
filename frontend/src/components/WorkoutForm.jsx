@@ -1,46 +1,46 @@
 import { useState } from "react";
-import { useWorkoutsContext } from "../hooks/useWorkoutsContex";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addWorkout } from "../features/workouts/workoutsSlice";
 
 const WorkoutForm = () => {
-  const { dispatch } = useWorkoutsContext();
+  // const workouts = useSelector((state) => state.workouts.workouts);
+  const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
   const [error, setError] = useState(null);
-  // const [emptyFields, setEmptyFields] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!title || !load || !reps) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    const newWorkout = {
+      title,
+      load,
+      reps,
+    };
+
     try {
-      const workout = { title, load, reps };
-
-      const res = await fetch("http://localhost:2001/api/workouts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(workout),
-      });
-
-      const json = await res.json();
-
-      if (!res.ok) {
-        setError(json.error);
-        // setEmptyFields(json.emptyFields);
-      }
-
-      if (res.ok) {
-        setError(null);
-        // setEmptyFields([]);
-        setTitle("");
-        setLoad("");
-        setReps("");
-        console.log("new workout added:", json);
-        dispatch({ type: "ADD_WORKOUT", payload: json });
-      }
+      const res = await axios.post(
+        "http://localhost:2001/api/workouts",
+        newWorkout
+      );
+      dispatch(addWorkout(res.data));
+      console.log(res.data);
     } catch (err) {
       console.error(err);
     }
+
+    setTitle("");
+    setLoad("");
+    setReps("");
+    setError(null);
   };
 
   return (
@@ -52,7 +52,6 @@ const WorkoutForm = () => {
         type="text"
         onChange={(e) => setTitle(e.target.value)}
         value={title}
-        // className={emptyFields.includes("title") ? "error" : ""}
       />
 
       <label>Load (in kg):</label>
@@ -60,7 +59,6 @@ const WorkoutForm = () => {
         type="number"
         onChange={(e) => setLoad(e.target.value)}
         value={load}
-        // className={emptyFields.includes("load") ? "error" : ""}
       />
 
       <label>Number of Reps:</label>
@@ -68,7 +66,6 @@ const WorkoutForm = () => {
         type="number"
         onChange={(e) => setReps(e.target.value)}
         value={reps}
-        // className={emptyFields.includes("reps") ? "error" : ""}
       />
 
       <button>Add Workout</button>
