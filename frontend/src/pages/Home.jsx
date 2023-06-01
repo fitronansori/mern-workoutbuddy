@@ -15,7 +15,6 @@ const Home = () => {
       try {
         const res = await axios.get("http://localhost:2001/api/workouts");
         dispatch(getWorkouts(res.data));
-        console.log(res.data);
       } catch (err) {
         console.error(err);
       }

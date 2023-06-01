@@ -1,18 +1,21 @@
 import PropTypes from "prop-types";
 import axios from "axios";
+// date format date-fns
+import { formatDistanceToNow } from "date-fns";
 import { useDispatch } from "react-redux";
 import { deleteWorkout } from "../features/workouts/workoutsSlice";
 
 const WorkoutDetails = ({ workout }) => {
   const dispatch = useDispatch();
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:2001/api/workouts/${workout._id}`);
-      dispatch(deleteWorkout(workout._id));
-    } catch (err) {
-      console.error(err);
-    }
+  const handleDelete = () => {
+    const id = workout._id;
+    axios
+      .delete(`http://localhost:2001/api/workouts/${id}`)
+      .then(() => {
+        dispatch(deleteWorkout(id));
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -26,7 +29,9 @@ const WorkoutDetails = ({ workout }) => {
         <strong>Number of reps: </strong>
         {workout.reps}
       </p>
-      <p>{workout.createdAt}</p>
+      <p>
+        {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
+      </p>
       <span onClick={handleDelete}>Delete</span>
     </div>
   );
