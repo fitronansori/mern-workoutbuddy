@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/workouts", require("./routes/workoutRoutes"));
+app.use("/api/user", require("./routes/userRoutes"));
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
