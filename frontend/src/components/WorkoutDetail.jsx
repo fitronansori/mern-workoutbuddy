@@ -2,16 +2,22 @@ import PropTypes from "prop-types";
 import axios from "axios";
 // date format date-fns
 import { formatDistanceToNow } from "date-fns";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteWorkout } from "../features/workouts/workoutsSlice";
+import { selectUser } from "../features/auth/authSlice";
 
 const WorkoutDetails = ({ workout }) => {
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const handleDelete = () => {
     const id = workout._id;
     axios
-      .delete(`http://localhost:2001/api/workouts/${id}`)
+      .delete(`http://localhost:2001/api/workouts/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
       .then(() => {
         dispatch(deleteWorkout(id));
       })

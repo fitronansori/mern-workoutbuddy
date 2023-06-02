@@ -5,23 +5,31 @@ import "./Home.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { getWorkouts } from "../features/workouts/workoutsSlice";
+import { selectUser } from "../features/auth/authSlice";
 
 const Home = () => {
   const workouts = useSelector((state) => state.workouts.workouts);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const res = await axios.get("http://localhost:2001/api/workouts");
+        const res = await axios.get("http://localhost:2001/api/workouts", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
         dispatch(getWorkouts(res.data));
       } catch (err) {
         console.error(err);
       }
     };
 
-    fetchWorkouts();
-  }, [dispatch]);
+    if (user) {
+      fetchWorkouts();
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="container">
