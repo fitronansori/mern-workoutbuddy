@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addWorkout } from "../features/workouts/workoutsSlice";
+import { selectUser } from "../features/auth/authSlice";
 
 const WorkoutForm = () => {
   // const workouts = useSelector((state) => state.workouts.workouts);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
@@ -29,7 +31,12 @@ const WorkoutForm = () => {
     try {
       const res = await axios.post(
         "http://localhost:2001/api/workouts",
-        newWorkout
+        newWorkout,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       dispatch(addWorkout(res.data));
       console.log(res.data);
