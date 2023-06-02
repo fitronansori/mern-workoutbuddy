@@ -8,11 +8,18 @@ import RootLayout from "./routes/RootLayout";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [{ index: true, element: <App /> }],
+    children: [
+      { index: true, element: <App /> },
+      { path: "signup", element: <SignUp /> },
+      { path: "login", element: <Login /> },
+    ],
   },
 ]);
 
