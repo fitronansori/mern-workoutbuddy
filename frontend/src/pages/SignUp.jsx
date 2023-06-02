@@ -4,7 +4,7 @@ import {
   // selectUser,
   selectStatus,
   selectError,
-  signup,
+  fetchSignup,
 } from "../features/auth/authSlice";
 
 const SignUp = () => {
@@ -19,7 +19,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signup({ email, password }));
+    dispatch(fetchSignup({ email, password }));
 
     setEmail("");
     setPassword("");

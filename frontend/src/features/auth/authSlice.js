@@ -3,7 +3,7 @@ import axios from "axios";
 
 const url = "http://localhost:2001/api/user";
 
-export const signup = createAsyncThunk(
+export const fetchSignup = createAsyncThunk(
   "/signup",
   async ({ email, password }, thunkAPI) => {
     try {
@@ -17,10 +17,27 @@ export const signup = createAsyncThunk(
     }
   }
 );
+
+export const fetchLogin = createAsyncThunk(
+  "/login",
+  async ({ email, password }, thunkAPI) => {
+    try {
+      const response = await axios.post(`${url}/login`, {
+        email,
+        password,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const initialState = {
   user: null,
   status: "idle", // loading, succeeded, failed
   error: null,
+  isLoggedIn: false,
 };
 
 export const authSlice = createSlice({
@@ -29,23 +46,42 @@ export const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.user = action.payload;
+      state.isLoggedIn = true;
     },
-
     logout: (state) => {
-      state.token = null;
+      // remove user dan isLoggedIn dari localStorage
+      localStorage.removeItem("user");
+      localStorage.removeItem("isLoggedIn");
+      state.user = null;
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(signup.pending, (state) => {
+      .addCase(fetchSignup.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(signup.fulfilled, (state, action) => {
+      .addCase(fetchSignup.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.user = action.payload;
         localStorage.setItem("user", JSON.stringify(action.payload));
       })
-      .addCase(signup.rejected, (state, action) => {
+      .addCase(fetchSignup.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    builder
+      .addCase(fetchLogin.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchLogin.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        localStorage.setItem("isLoggedIn", true);
+      })
+
+      .addCase(fetchLogin.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
