@@ -6,8 +6,11 @@ const Workout = require("../models/workoutModel");
 // @access  Public
 
 const getWorkouts = async (req, res) => {
+  // get workouts from database berdasarkan user_id
+  const user_id = req.user._id; //kenapa null? karena belum ada user yang login
+
   try {
-    const workouts = await Workout.find().sort({ createdAt: -1 });
+    const workouts = await Workout.find({ user_id }).sort({ createdAt: -1 });
     res.status(200).json(workouts);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -19,9 +22,10 @@ const getWorkouts = async (req, res) => {
 // @access  Public
 
 const createWorkout = async (req, res) => {
+  const { title, reps, load } = req.body;
   try {
-    const { title, reps, load } = req.body;
-    const workout = await Workout.create({ title, reps, load });
+    const user_id = req.user._id;
+    const workout = await Workout.create({ title, reps, load, user_id });
     res.status(201).json(workout);
   } catch (error) {
     res.status(400).json({ error: error.message });

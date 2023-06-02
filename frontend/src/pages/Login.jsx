@@ -51,7 +51,7 @@ const Login = () => {
       />
 
       <button>Log in</button>
-      <div>
+      {/* <div>
         {status === "loading" && <p>Loading...</p>}
         {status === "failed" && (
           <div
@@ -67,7 +67,7 @@ const Login = () => {
             <p>{error.error}</p>
           </div>
         )}
-      </div>
+      </div> */}
     </form>
   );
 };

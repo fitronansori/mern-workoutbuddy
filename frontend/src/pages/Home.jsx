@@ -30,8 +30,6 @@ const Home = () => {
 
     if (user) {
       fetchWorkouts();
-    } else {
-      navigate("/login");
     }
   }, [dispatch, user, navigate]);
 
