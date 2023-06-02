@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  // selectUser,
+  selectUser,
   selectStatus,
   selectError,
   fetchLogin,
 } from "../features/auth/authSlice";
-
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const dispatch = useDispatch();
 
-  // const user = useSelector(selectUser);
+  const user = useSelector(selectUser);
   const status = useSelector(selectStatus);
   const error = useSelector(selectError);
 
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,11 +23,15 @@ const Login = () => {
 
     dispatch(fetchLogin({ email, password }));
 
-    if (status === "succeeded") {
-      setEmail("");
-      setPassword("");
-    }
+    setEmail("");
+    setPassword("");
   };
+
+  useEffect(() => {
+    if (status === "succeeded" && user) {
+      navigate("/");
+    }
+  }, [status, user, navigate]);
 
   return (
     <form className="login" onSubmit={handleSubmit}>

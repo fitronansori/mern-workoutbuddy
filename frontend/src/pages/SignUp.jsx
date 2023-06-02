@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  // selectUser,
+  selectUser,
   selectStatus,
   selectError,
   fetchSignup,
@@ -10,9 +11,11 @@ import {
 const SignUp = () => {
   const dispatch = useDispatch();
 
-  // const user = useSelector(selectUser);
+  const user = useSelector(selectUser);
   const status = useSelector(selectStatus);
   const error = useSelector(selectError);
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +27,12 @@ const SignUp = () => {
     setEmail("");
     setPassword("");
   };
+
+  useEffect(() => {
+    if (status === "succeeded" && user) {
+      navigate("/");
+    }
+  }, [status, user, navigate]);
 
   return (
     <form className="signup" onSubmit={handleSubmit}>

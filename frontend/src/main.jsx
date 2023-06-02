@@ -7,7 +7,6 @@ import RootLayout from "./routes/RootLayout";
 // import { WorkoutsContextProvider } from "./context/WorkoutsContext";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
-
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 

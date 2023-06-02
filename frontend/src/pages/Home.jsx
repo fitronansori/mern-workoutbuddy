@@ -3,6 +3,7 @@ import WorkoutDetails from "../components/WorkoutDetail";
 import WorkoutForm from "../components/WorkoutForm";
 import "./Home.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getWorkouts } from "../features/workouts/workoutsSlice";
 import { selectUser } from "../features/auth/authSlice";
@@ -11,6 +12,7 @@ const Home = () => {
   const workouts = useSelector((state) => state.workouts.workouts);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -28,8 +30,10 @@ const Home = () => {
 
     if (user) {
       fetchWorkouts();
+    } else {
+      navigate("/login");
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, navigate]);
 
   return (
     <div className="container">
